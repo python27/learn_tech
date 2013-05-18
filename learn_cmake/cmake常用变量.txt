@@ -1,0 +1,23 @@
+1. CMAKE_BINARY_DIR
+   PROJECT_BINARY_DIR
+   <projectname>_BINARY_DIR
+   工程发生编译的目录
+
+2. CMAKE_SOURCE_DIR
+   PROJECT_SOURCE_DIR
+   <projectname>_SOURCE_DIR
+   工程顶层目录
+
+3. CMAKE_CURRENT_SOURCE_DIR
+   当前处理的CMakeLists.txt所在的路径
+
+4. CMAKE_CURRENT_BINARY_DIR
+   target编译目录
+
+5. EXECUTABLE_OUTPUT_PATH
+   LIBRARY_OUTPUT_PATH
+   重新定义最终结果的存放目录
+
+6. CMAKE_MAJOR_VERSION 主版本号
+   CMAKE_MINOR_VERSION 次版本号
+   CMAKE_PATCH_VERSION 补丁等级
