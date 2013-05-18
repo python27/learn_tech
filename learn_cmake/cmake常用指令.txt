@@ -1,0 +1,96 @@
+1. ADD_DEFINITIONS
+   ADD_DEFINITIONS(-D ENABLE_DEBUG)
+   #ifdef ENABLE_DEBUG #endif
+
+2. ADD_DEPENDENCIES
+   ADD_DEPENDENCIES(target-name  depend-target1 depend-target2)
+
+3. ADD_EXECUTABLE
+   ADD_LIBRARY
+   ADD_SUBDIRECTORY
+
+4. ENABLE_TESTING
+   ENABLE_TESTING() 放在工程的主CMakeLists.txt
+
+5. ADD_TEST
+   ADD_TEST(testname Exename arg1 arg2 ...)
+
+6. AUX_SOURCE_DIRECTORY
+   AUX_SOURCE_DIRECTORY(. SRC_LIST)
+   ADD_EXECUTABLE(main ${SRC_LIST})
+
+7. CMAKE_MINIMUM_REQUIRED
+   CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
+
+8. FIND
+   FIND_FILE
+   FINE_LIBRARY
+   FIND_PATH
+   FIND_PROGRAM
+   FIND_PACKAGE
+
+   FIND_LIBRARY(libX x11 /usr/lib)
+   IF(NOT libx)
+   MESSAGE(FATAL_ERROR "libX not found")
+   ENDIF(NOT libx)
+
+9. IF(var)
+    IF(NOT var)
+    IF(var1 AND var2)
+    IF(var1 OR var2)
+    IF(COMMAND cmd)
+    IF(EXISTS dir) IF(EXISTS file)
+    IF(file1 IS_NEWER_THAN file2)
+    IF(IS_DIRECTORY dirname)
+    IF(variable MATCHES regex)
+    IF(string MATCHES regex)
+
+    IF(var LESS|GRETER|EQUAL number)
+    IF(strign LESS|GRETER|EQUAL number)
+    
+    IF(var STRLESS | STRGRETER | STRQUEAL string)
+    IF(DEFINED var)
+
+    SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
+    IF(WIN32)
+    #do sth. related to win32
+    ELSEIF(UNIX)
+    # do sth. related to UNIX
+    ELSEIF(APPLE)
+    # do sth. related to APPLE
+    ENDIF(WIN32)
+
+10. FOREACH(loop_var arg1 arg2 ...)
+      COMMAND1(ARGS...)
+      COMMAND2(ARGS...)
+      ...
+    ENDFOREACH(loop_var)
+
+    AUX_SOURCE_DIRECTORY(. SRC_LIST)
+    FOREACH(F ${SRC_LIST})
+        MESSAGE(${F})
+    ENDFOREACH(F)
+
+    FOREACH(VAR RANGE 10)
+        MESSAGE(${VAR})
+    ENDFOREACH(VAR)
+    0
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9 
+    10
+
+    FOREACH(A RANGE 5 15 3)
+        MESSAGE(${A})
+    ENDFOREACH(A)
+    5
+    8
+    11
+    14
+
