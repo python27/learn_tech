@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/python27/Documents/code/learn_cmake/t3/lib/hello.c
+hello.h
+/home/python27/Documents/code/learn_cmake/t3/lib/hello.h
+
+/home/python27/Documents/code/learn_cmake/t3/lib/hello.h
+stdio.h
+-
+

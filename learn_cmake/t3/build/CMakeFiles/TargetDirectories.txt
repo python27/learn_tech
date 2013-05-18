@@ -1,0 +1,2 @@
+/home/python27/Documents/code/learn_cmake/t3/build/lib/CMakeFiles/hello.dir
+/home/python27/Documents/code/learn_cmake/t3/build/lib/CMakeFiles/hello_static.dir
