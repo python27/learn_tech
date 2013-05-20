@@ -1,0 +1,2 @@
+/home/python27/Documents/learn_tech/learn_cmake/step3/build/MathFunctions/CMakeFiles/MathFunctions.dir
+/home/python27/Documents/learn_tech/learn_cmake/step3/build/CMakeFiles/Tutorial.dir
