@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/python27/Documents/learn_tech/learn_cmake/step2/MathFunctions/MathFunctions.h
+
+/home/python27/Documents/learn_tech/learn_cmake/step2/MathFunctions/mysqrt.cxx
+stdio.h
+-
+MathFunctions.h
+/home/python27/Documents/learn_tech/learn_cmake/step2/MathFunctions/MathFunctions.h
+

@@ -1,0 +1,14 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(Tutorial)
+
+SET (Tutorial_VERSION_MAJOR 1)
+SET (Tutorial_VERSION_MINOR 0)
+
+CONFIGURE_FILE(
+    "${PROJECT_SOURCE_DIR}/TutorialConfig.h.in"
+    "${PROJECT_BINARY_DIR}/TutorialConfig.h"
+    )
+
+INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
+
+ADD_EXECUTABLE(Tutorial tutorial.cxx)
