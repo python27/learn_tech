@@ -1,0 +1,122 @@
+Start testing: May 22 00:40 CST
+----------------------------------------------------------
+1/5 Testing: TutorialRuns
+1/5 Test: TutorialRuns
+Command: "/home/python27/Documents/learn_tech/learn_cmake/step7/build/Tutorial" "25"
+Directory: /home/python27/Documents/learn_tech/learn_cmake/step7/build
+"TutorialRuns" start time: May 22 00:40 CST
+Output:
+----------------------------------------------------------
+Computing sqrt of 25 to be 13
+Computing sqrt of 25 to be 7.46154
+Computing sqrt of 25 to be 5.40603
+Computing sqrt of 25 to be 5.01525
+Computing sqrt of 25 to be 5.00002
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+The square root of 25 is 5
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"TutorialRuns" end time: May 22 00:40 CST
+"TutorialRuns" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/5 Testing: TutorialComp25
+2/5 Test: TutorialComp25
+Command: "/home/python27/Documents/learn_tech/learn_cmake/step7/build/Tutorial" "25"
+Directory: /home/python27/Documents/learn_tech/learn_cmake/step7/build
+"TutorialComp25" start time: May 22 00:40 CST
+Output:
+----------------------------------------------------------
+Computing sqrt of 25 to be 13
+Computing sqrt of 25 to be 7.46154
+Computing sqrt of 25 to be 5.40603
+Computing sqrt of 25 to be 5.01525
+Computing sqrt of 25 to be 5.00002
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+Computing sqrt of 25 to be 5
+The square root of 25 is 5
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[25 is 5
+]
+"TutorialComp25" end time: May 22 00:40 CST
+"TutorialComp25" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/5 Testing: TutorialNegative
+3/5 Test: TutorialNegative
+Command: "/home/python27/Documents/learn_tech/learn_cmake/step7/build/Tutorial" "-25"
+Directory: /home/python27/Documents/learn_tech/learn_cmake/step7/build
+"TutorialNegative" start time: May 22 00:40 CST
+Output:
+----------------------------------------------------------
+The square root of -25 is 0
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[-25 is 0
+]
+"TutorialNegative" end time: May 22 00:40 CST
+"TutorialNegative" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: TutorialSmall
+4/5 Test: TutorialSmall
+Command: "/home/python27/Documents/learn_tech/learn_cmake/step7/build/Tutorial" "0.0001"
+Directory: /home/python27/Documents/learn_tech/learn_cmake/step7/build
+"TutorialSmall" start time: May 22 00:40 CST
+Output:
+----------------------------------------------------------
+Computing sqrt of 0.0001 to be 0.50005
+Computing sqrt of 0.0001 to be 0.250125
+Computing sqrt of 0.0001 to be 0.125262
+Computing sqrt of 0.0001 to be 0.0630304
+Computing sqrt of 0.0001 to be 0.0323084
+Computing sqrt of 0.0001 to be 0.0177018
+Computing sqrt of 0.0001 to be 0.0116755
+Computing sqrt of 0.0001 to be 0.0101202
+Computing sqrt of 0.0001 to be 0.0100007
+Computing sqrt of 0.0001 to be 0.01
+The square root of 0.0001 is 0.01
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[0.0001 is 0.01
+]
+"TutorialSmall" end time: May 22 00:40 CST
+"TutorialSmall" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/5 Testing: TutorialUsage
+5/5 Test: TutorialUsage
+Command: "/home/python27/Documents/learn_tech/learn_cmake/step7/build/Tutorial"
+Directory: /home/python27/Documents/learn_tech/learn_cmake/step7/build
+"TutorialUsage" start time: May 22 00:40 CST
+Output:
+----------------------------------------------------------
+/home/python27/Documents/learn_tech/learn_cmake/step7/build/Tutorial Version 1.0
+Usage: /home/python27/Documents/learn_tech/learn_cmake/step7/build/Tutorial number
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[Usage: .*number
+]
+"TutorialUsage" end time: May 22 00:40 CST
+"TutorialUsage" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 22 00:40 CST
