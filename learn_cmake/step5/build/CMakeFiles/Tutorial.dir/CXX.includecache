@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../MathFunctions/MathFunctions.h
+
+/home/python27/Documents/learn_tech/learn_cmake/step5/tutorial.cxx
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
+TutorialConfig.h
+/home/python27/Documents/learn_tech/learn_cmake/step5/TutorialConfig.h
+MathFunctions.h
+/home/python27/Documents/learn_tech/learn_cmake/step5/MathFunctions.h
+
+TutorialConfig.h
+
