@@ -1,0 +1,3 @@
+/home/python27/Documents/learn_tech/learn_cmake/step6/build/MathFunctions/CMakeFiles/MakeTable.dir
+/home/python27/Documents/learn_tech/learn_cmake/step6/build/MathFunctions/CMakeFiles/MathFunctions.dir
+/home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/Tutorial.dir

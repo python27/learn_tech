@@ -1,0 +1,42 @@
+Determining if the function log exists failed with the following output:
+Change Dir: /home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec896031120/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec896031120.dir/build.make CMakeFiles/cmTryCompileExec896031120.dir/build
+make[1]: Entering directory `/home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec896031120.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=log   -o CMakeFiles/cmTryCompileExec896031120.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/share/cmake-2.8/Modules/CheckFunctionExists.c:3:6: warning: conflicting types for built-in function ‘log’ [enabled by default]
+Linking C executable cmTryCompileExec896031120
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec896031120.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=log    CMakeFiles/cmTryCompileExec896031120.dir/CheckFunctionExists.c.o  -o cmTryCompileExec896031120 -rdynamic 
+CMakeFiles/cmTryCompileExec896031120.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x7): undefined reference to `log'
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec896031120] Error 1
+make[1]: Leaving directory `/home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp'
+make: *** [cmTryCompileExec896031120/fast] Error 2
+
+
+Determining if the function exp exists failed with the following output:
+Change Dir: /home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec929785558/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec929785558.dir/build.make CMakeFiles/cmTryCompileExec929785558.dir/build
+make[1]: Entering directory `/home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec929785558.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=exp   -o CMakeFiles/cmTryCompileExec929785558.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/share/cmake-2.8/Modules/CheckFunctionExists.c:3:6: warning: conflicting types for built-in function ‘exp’ [enabled by default]
+Linking C executable cmTryCompileExec929785558
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec929785558.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=exp    CMakeFiles/cmTryCompileExec929785558.dir/CheckFunctionExists.c.o  -o cmTryCompileExec929785558 -rdynamic 
+CMakeFiles/cmTryCompileExec929785558.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x7): undefined reference to `exp'
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec929785558] Error 1
+make[1]: Leaving directory `/home/python27/Documents/learn_tech/learn_cmake/step6/build/CMakeFiles/CMakeTmp'
+make: *** [cmTryCompileExec929785558/fast] Error 2
+
+
