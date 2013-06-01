@@ -42,17 +42,18 @@ class BurningWidget(QtGui.QWidget):
 
         if self.value >= 700:
             qp.setPen(QtGui.QColor(255, 255, 255))
-            qp.setBrush(QtGui.QColor(255, 255, 184))
+            qp.setBrush(QtGui.QColor(0, 255, 0))
             qp.drawRect(0, 0, full, h)
+
             qp.setPen(QtGui.QColor(255, 175, 175))
-            qp.setBrush(QtGui.QColor(255, 175, 175))
+            qp.setBrush(QtGui.QColor(0, 0, 255))
             qp.drawRect(full, 0, till - full, h)
         else:
-            qp.setPen(QtGui.QColor(255, 255, 255))
-            qp.setBrush(QtGui.QColor(255, 255, 184))
+            qp.setPen(QtGui.QColor(255, 0, 0))
+            qp.setBrush(QtGui.QColor(255, 0, 0))
             qp.drawRect(0, 0, till, h)
 
-        pen = QtGui.QPen(QtGui.QColor(20, 20, 20), 1,
+        pen = QtGui.QPen(QtGui.QColor(255, 255, 255), 1,
         QtCore.Qt.SolidLine)
         qp.setPen(pen)
         qp.setBrush(QtCore.Qt.NoBrush)
