@@ -1,26 +1,25 @@
-#!usr/bin/python
-#-*- coding: utf-8 -*-
+#!/usr/bin/python
 
+# tetris.py
 
 import sys
 import random
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtCore, QtGui
 
 
 class Tetris(QtGui.QMainWindow):
-
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
 
         self.setGeometry(300, 300, 180, 380)
-        self.setWindowTitle("Tetris")
+        self.setWindowTitle('Tetris')
         self.tetrisboard = Board(self)
 
         self.setCentralWidget(self.tetrisboard)
+
         self.statusbar = self.statusBar()
-        self.connect(self.tetrisboard, QtCore.SIGNAL(
-            "messageToStatusbar(QString)"),
-                self.statusbar, QtCore.SLOT("showMessage(QString)"))
+        self.connect(self.tetrisboard, QtCore.SIGNAL("messageToStatusbar(QString)"),
+            self.statusbar, QtCore.SLOT("showMessage(QString)"))
 
         self.tetrisboard.start()
         self.center()
@@ -28,12 +27,10 @@ class Tetris(QtGui.QMainWindow):
     def center(self):
         screen = QtGui.QDesktopWidget().screenGeometry()
         size = self.geometry()
-        self.move((screen.width() - size.width()) / 2,
-            (screen.height() - size.height()) / 2)
-
+        self.move((screen.width()-size.width())/2,
+            (screen.height()-size.height())/2)
 
 class Board(QtGui.QFrame):
-
     BoardWidth = 10
     BoardHeight = 22
     Speed = 300
@@ -42,7 +39,7 @@ class Board(QtGui.QFrame):
         QtGui.QFrame.__init__(self, parent)
 
         self.timer = QtCore.QBasicTimer()
-        self.isWaitingAferLine = False
+        self.isWaitingAfterLine = False
         self.curPiece = Shape()
         self.nextPiece = Shape()
         self.curX = 0
@@ -58,7 +55,7 @@ class Board(QtGui.QFrame):
         self.nextPiece.setRandomShape()
 
     def shapeAt(self, x, y):
-        return self.board[y * Board.BoardWidth + x]
+        return self.board[(y * Board.BoardWidth) + x]
 
     def setShapeAt(self, x, y, shape):
         self.board[(y * Board.BoardWidth) + x] = shape
@@ -89,7 +86,6 @@ class Board(QtGui.QFrame):
             return
 
         self.isPaused = not self.isPaused
-
         if self.isPaused:
             self.timer.stop()
             self.emit(QtCore.SIGNAL("messageToStatusbar(QString)"), "paused")
@@ -118,24 +114,21 @@ class Board(QtGui.QFrame):
             for i in range(4):
                 x = self.curX + self.curPiece.x(i)
                 y = self.curY - self.curPiece.y(i)
-                self.drawSquare(painter,
-                    rect.left() + x * self.squareWidth(),
-                    boardTop + (Board.BoardHeight - y - 1)
-                    * self.squareHeight(), self.curPiece.shape())
+                self.drawSquare(painter, rect.left() + x * self.squareWidth(),
+                    boardTop + (Board.BoardHeight - y - 1) * self.squareHeight(),
+                    self.curPiece.shape())
 
-    def KeyPressEvent(self, event):
+    def keyPressEvent(self, event):
         if not self.isStarted or self.curPiece.shape() == Tetrominoes.NoShape:
-            QtGui.QWidget.KeyPressEvent(self, event)
+            QtGui.QWidget.keyPressEvent(self, event)
             return
 
         key = event.key()
         if key == QtCore.Qt.Key_P:
-            if self.isPaused:
-                return
             self.pause()
             return
-        #if self.isPaused:
-        #    return
+        if self.isPaused:
+            return
         elif key == QtCore.Qt.Key_Left:
             self.tryMove(self.curPiece, self.curX - 1, self.curY)
         elif key == QtCore.Qt.Key_Right:
@@ -149,7 +142,7 @@ class Board(QtGui.QFrame):
         elif key == QtCore.Qt.Key_D:
             self.oneLineDown()
         else:
-            QtGui.Widget.keyPressEvent(self, event)
+            QtGui.QWidget.keyPressEvent(self, event)
 
     def timerEvent(self, event):
         if event.timerId() == self.timer.timerId():
@@ -171,6 +164,7 @@ class Board(QtGui.QFrame):
             if not self.tryMove(self.curPiece, self.curX, newY - 1):
                 break
             newY -= 1
+
         self.pieceDropped()
 
     def oneLineDown(self):
@@ -190,12 +184,15 @@ class Board(QtGui.QFrame):
 
     def removeFullLines(self):
         numFullLines = 0
+
         rowsToRemove = []
+
         for i in range(Board.BoardHeight):
             n = 0
             for j in range(Board.BoardWidth):
                 if not self.shapeAt(j, i) == Tetrominoes.NoShape:
                     n = n + 1
+
             if n == 10:
                 rowsToRemove.append(i)
 
@@ -228,6 +225,8 @@ class Board(QtGui.QFrame):
             self.isStarted = False
             self.emit(QtCore.SIGNAL("messageToStatusbar(QString)"), "Game over")
 
+
+
     def tryMove(self, newPiece, newX, newY):
         for i in range(4):
             x = newX + newPiece.x(i)
@@ -245,11 +244,11 @@ class Board(QtGui.QFrame):
 
     def drawSquare(self, painter, x, y, shape):
         colorTable = [0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
-            0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00]
+                      0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00]
 
         color = QtGui.QColor(colorTable[shape])
         painter.fillRect(x + 1, y + 1, self.squareWidth() - 2,
-            self.squareHeight() - 2, color)
+	    self.squareHeight() - 2, color)
 
         painter.setPen(color.light())
         painter.drawLine(x, y + self.squareHeight() - 1, x, y)
@@ -259,7 +258,7 @@ class Board(QtGui.QFrame):
         painter.drawLine(x + 1, y + self.squareHeight() - 1,
             x + self.squareWidth() - 1, y + self.squareHeight() - 1)
         painter.drawLine(x + self.squareWidth() - 1,
-            y + self.squareHeight() - 1, x + self.squareWidth() - 1, y + 1)
+	    y + self.squareHeight() - 1, x + self.squareWidth() - 1, y + 1)
 
 
 class Tetrominoes(object):
@@ -270,23 +269,23 @@ class Tetrominoes(object):
     TShape = 4
     SquareShape = 5
     LShape = 6
-    MirroredShape = 7
+    MirroredLShape = 7
 
 
 class Shape(object):
     coordsTable = (
-        ((0, 0), (0, 0), (0, 0), (0, 0)),
-        ((0, -1), (0, 0), (-1, 0), (-1, 1)),
-        ((0, -1), (0, 0), (1, 0), (1, 1)),
-        ((0, -1), (0, 0), (0, 1), (0, 2)),
-        ((-1, 0), (0, 0), (1, 0), (0, 1)),
-        ((0, 0), (1, 0), (0, 1), (1, 1)),
-        ((-1, -1), (0, -1), (0, 0), (0, 1)),
-        ((1, -1), (0, -1), (0, 0), (0, 1))
+        ((0, 0),     (0, 0),     (0, 0),     (0, 0)),
+        ((0, -1),    (0, 0),     (-1, 0),    (-1, 1)),
+        ((0, -1),    (0, 0),     (1, 0),     (1, 1)),
+        ((0, -1),    (0, 0),     (0, 1),     (0, 2)),
+        ((-1, 0),    (0, 0),     (1, 0),     (0, 1)),
+        ((0, 0),     (1, 0),     (0, 1),     (1, 1)),
+        ((-1, -1),   (0, -1),    (0, 0),     (0, 1)),
+        ((1, -1),    (0, -1),    (0, 0),     (0, 1))
     )
 
     def __init__(self):
-        self.coords = [[0, 0] for i in range(4)]
+        self.coords = [[0,0] for i in range(4)]
         self.pieceShape = Tetrominoes.NoShape
 
         self.setShape(Tetrominoes.NoShape)
@@ -321,24 +320,28 @@ class Shape(object):
         m = self.coords[0][0]
         for i in range(4):
             m = min(m, self.coords[i][0])
+
         return m
 
     def maxX(self):
         m = self.coords[0][0]
         for i in range(4):
             m = max(m, self.coords[i][0])
+
         return m
 
     def minY(self):
         m = self.coords[0][1]
         for i in range(4):
             m = min(m, self.coords[i][1])
+
         return m
 
     def maxY(self):
         m = self.coords[0][1]
         for i in range(4):
             m = max(m, self.coords[i][1])
+
         return m
 
     def rotatedLeft(self):
@@ -362,6 +365,7 @@ class Shape(object):
         for i in range(4):
             result.setX(i, -self.y(i))
             result.setY(i, self.x(i))
+
         return result
 
 
