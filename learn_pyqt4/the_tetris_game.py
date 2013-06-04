@@ -1,6 +1,9 @@
 #!usr/bin/python
 #-*- coding: utf-8 -*-
-
+# Russian Cube Game
+# Author: XinFeng Li
+# Date: 2013/06/04
+# License: GPLv2
 
 import sys
 import random
@@ -17,10 +20,11 @@ class Tetris(QtGui.QMainWindow):
         self.tetrisboard = Board(self)
 
         self.setCentralWidget(self.tetrisboard)
+
         self.statusbar = self.statusBar()
         self.connect(self.tetrisboard, QtCore.SIGNAL(
             "messageToStatusbar(QString)"),
-                self.statusbar, QtCore.SLOT("showMessage(QString)"))
+            self.statusbar, QtCore.SLOT("showMessage(QString)"))
 
         self.tetrisboard.start()
         self.center()
@@ -42,7 +46,7 @@ class Board(QtGui.QFrame):
         QtGui.QFrame.__init__(self, parent)
 
         self.timer = QtCore.QBasicTimer()
-        self.isWaitingAferLine = False
+        self.isWaitingAfterLine = False
         self.curPiece = Shape()
         self.nextPiece = Shape()
         self.curX = 0
@@ -123,19 +127,19 @@ class Board(QtGui.QFrame):
                     boardTop + (Board.BoardHeight - y - 1)
                     * self.squareHeight(), self.curPiece.shape())
 
-    def KeyPressEvent(self, event):
+    def keyPressEvent(self, event):
         if not self.isStarted or self.curPiece.shape() == Tetrominoes.NoShape:
-            QtGui.QWidget.KeyPressEvent(self, event)
+            QtGui.QWidget.keyPressEvent(self, event)
             return
 
         key = event.key()
         if key == QtCore.Qt.Key_P:
-            if self.isPaused:
-                return
+            #if self.isPaused:
+                #return
             self.pause()
             return
-        #if self.isPaused:
-        #    return
+        if self.isPaused:
+            return
         elif key == QtCore.Qt.Key_Left:
             self.tryMove(self.curPiece, self.curX - 1, self.curY)
         elif key == QtCore.Qt.Key_Right:
@@ -201,6 +205,7 @@ class Board(QtGui.QFrame):
 
         rowsToRemove.reverse()
 
+        # remove the full lines, at same time, drop the above to the line
         for m in rowsToRemove:
             for k in range(m, Board.BoardHeight):
                 for l in range(Board.BoardWidth):
@@ -248,10 +253,12 @@ class Board(QtGui.QFrame):
             0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00]
 
         color = QtGui.QColor(colorTable[shape])
+        # painter.fillRect(self, int x, int y, int w, int h, QColor c)
         painter.fillRect(x + 1, y + 1, self.squareWidth() - 2,
             self.squareHeight() - 2, color)
 
         painter.setPen(color.light())
+        # drawLine(self, int x1, int y1, int x2, int y2)
         painter.drawLine(x, y + self.squareHeight() - 1, x, y)
         painter.drawLine(x, y, x + self.squareWidth() - 1, y)
 
@@ -270,7 +277,7 @@ class Tetrominoes(object):
     TShape = 4
     SquareShape = 5
     LShape = 6
-    MirroredShape = 7
+    MirroredLShape = 7
 
 
 class Shape(object):
