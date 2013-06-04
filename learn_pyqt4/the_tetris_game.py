@@ -15,12 +15,20 @@ class Tetris(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
 
+        # QWidget.setGeometry(self, int ax, int ay, int aw, int ah)
         self.setGeometry(300, 300, 180, 380)
+        # Qwidiget.setWindowTitle(self, QString)
         self.setWindowTitle("Tetris")
+
+        # class Board is defined later
         self.tetrisboard = Board(self)
 
+        # QMainWindow.setCentralWidget(self, QWidget widget)
+        # set the given widget to be the main window's central widget
         self.setCentralWidget(self.tetrisboard)
 
+        # QStatusBar statusBar(self)
+        # construct a statusbar
         self.statusbar = self.statusBar()
         self.connect(self.tetrisboard, QtCore.SIGNAL(
             "messageToStatusbar(QString)"),
@@ -30,7 +38,12 @@ class Tetris(QtGui.QMainWindow):
         self.center()
 
     def center(self):
+
+        # get the screen info.
         screen = QtGui.QDesktopWidget().screenGeometry()
+
+        # QRect QWidget.geometry(self)
+        # get the Tetris window's rect(x, y, w, h)
         size = self.geometry()
         self.move((screen.width() - size.width()) / 2,
             (screen.height() - size.height()) / 2)
@@ -45,6 +58,7 @@ class Board(QtGui.QFrame):
     def __init__(self, parent):
         QtGui.QFrame.__init__(self, parent)
 
+        # timer
         self.timer = QtCore.QBasicTimer()
         self.isWaitingAfterLine = False
         self.curPiece = Shape()
@@ -54,6 +68,7 @@ class Board(QtGui.QFrame):
         self.numLinesRemoved = 0
         self.board = []
 
+        # QWidget.setFocusPolicy(self, Qt.FocusPolicy policy)
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.isStarted = False
         self.isPaused = False
@@ -62,12 +77,14 @@ class Board(QtGui.QFrame):
         self.nextPiece.setRandomShape()
 
     def shapeAt(self, x, y):
+        ''' return the shape at(x, y)'''
         return self.board[y * Board.BoardWidth + x]
 
     def setShapeAt(self, x, y, shape):
         self.board[(y * Board.BoardWidth) + x] = shape
 
     def squareWidth(self):
+        '''the ratio between contentsRect and Board'''
         return self.contentsRect().width() / Board.BoardWidth
 
     def squareHeight(self):
@@ -227,6 +244,7 @@ class Board(QtGui.QFrame):
         self.curX = Board.BoardWidth / 2 + 1
         self.curY = Board.BoardHeight - 1 + self.curPiece.minY()
 
+        # if new piece cannot place the middle top of Board. Game Over
         if not self.tryMove(self.curPiece, self.curX, self.curY):
             self.curPiece.setShape(Tetrominoes.NoShape)
             self.timer.stop()
@@ -270,6 +288,7 @@ class Board(QtGui.QFrame):
 
 
 class Tetrominoes(object):
+    ''' struct a shape set '''
     NoShape = 0
     ZShape = 1
     SShape = 2
@@ -293,9 +312,12 @@ class Shape(object):
     )
 
     def __init__(self):
+        '''every shape corresponding to 4 turples'''
         self.coords = [[0, 0] for i in range(4)]
+        '''every shape has a shape num defined by Tetrominoes '''
         self.pieceShape = Tetrominoes.NoShape
 
+        '''' init shape with NoShape'''
         self.setShape(Tetrominoes.NoShape)
 
     def shape(self):
@@ -354,6 +376,10 @@ class Shape(object):
 
         result = Shape()
         result.pieceShape = self.pieceShape
+        # rotation equation
+        # x1 = x cos(angle) - y sin(angle)
+        # y1 = y cos(angle) + x sin(angle)
+        # here angle = pi / 2
         for i in range(4):
             result.setX(i, self.y(i))
             result.setY(i, -self.x(i))
