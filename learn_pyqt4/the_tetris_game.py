@@ -123,10 +123,14 @@ class Board(QtGui.QFrame):
 
     def paintEvent(self, event):
         painter = QtGui.QPainter(self)
+
+        # contextsRect() return the Rect inside the margin
         rect = self.contentsRect()
 
+        # rect.bottom return the bottom y coordinate = top + height - 1
         boardTop = rect.bottom() - Board.BoardHeight * self.squareHeight()
 
+        # paint all the fixed shape
         for i in range(Board.BoardHeight):
             for j in range(Board.BoardWidth):
                 shape = self.shapeAt(j, Board.BoardHeight - i - 1)
@@ -135,6 +139,7 @@ class Board(QtGui.QFrame):
                         rect.left() + j * self.squareWidth(),
                         boardTop + i * self.squareHeight(), shape)
 
+        # paint current falling shape
         if self.curPiece.shape() != Tetrominoes.NoShape:
             for i in range(4):
                 x = self.curX + self.curPiece.x(i)
@@ -172,6 +177,9 @@ class Board(QtGui.QFrame):
         else:
             QtGui.Widget.keyPressEvent(self, event)
 
+    # when timer timeout, timerEvent was invoked.
+    # we either moving the falling piece one line down
+    # or we create a new piece if the current piece dropped to the bottom
     def timerEvent(self, event):
         if event.timerId() == self.timer.timerId():
             if self.isWaitingAfterLine:
@@ -300,6 +308,7 @@ class Tetrominoes(object):
 
 
 class Shape(object):
+    # Shape has two data member: coords and pieceshape (enum type)
     coordsTable = (
         ((0, 0), (0, 0), (0, 0), (0, 0)),
         ((0, -1), (0, 0), (-1, 0), (-1, 1)),
