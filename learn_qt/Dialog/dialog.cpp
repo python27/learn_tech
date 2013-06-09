@@ -10,13 +10,6 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->treeWidget->setColumnCount(2);
-    ui->treeWidget->setHeaderLabels(QStringList()<<"one"<<"two");
-
-    addRoot("1 Hello", "World");
-    addRoot("2 Hello", "World");
-    addRoot("3 Hello", "World");
-
 }
 
 
@@ -26,31 +19,41 @@ Dialog::~Dialog()
 }
 
 
-void Dialog::addRoot(QString name, QString description)
-{
-    QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-    item->setText(0, name);
-    item->setText(1, description);
-    ui->treeWidget->addTopLevelItem(item);
 
 
-    addChild(item, "one", "hello");
-    addChild(item, "two", "hello");
-}
 
-
-void Dialog::addChild(QTreeWidgetItem *parent,QString name, QString description)
-{
-    QTreeWidgetItem *item = new QTreeWidgetItem(parent);
-    item->setText(0, name);
-    item->setText(1, description);
-    parent->addChild(item);
-}
 
 
 
 void Dialog::on_pushButton_clicked()
 {
-    ui->treeWidget->currentItem()->setBackgroundColor(0, Qt::red);
-    ui->treeWidget->currentItem()->setBackgroundColor(1, Qt::blue);
+    //info
+    QMessageBox::information(this, "Message", "hello");
+}
+
+void Dialog::on_pushButton_2_clicked()
+{
+    QMessageBox::StandardButton  reply;
+    reply = QMessageBox::question(this, "question", "do you like dog ?", QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        QMessageBox::information(this, "Message", "you like dog");
+    }
+    else
+    {
+        QMessageBox::information(this, "Message", "you don't like dog");
+    }
+}
+
+void Dialog::on_pushButton_3_clicked()
+{
+    QMessageBox::warning(this, "warning", "warning info.");
+}
+
+
+
+void Dialog::on_pushButton_4_clicked()
+{
+    QMessageBox::information(this, "custom", "custom info.", QMessageBox::Yes
+                             | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll);
 }
