@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'richedit.ui'
 **
-** Created: Fri Jun 7 23:27:57 2013
-**      by: Qt User Interface Compiler version 4.8.3
+** Created: Sat Jun 22 12:25:34 2013
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
