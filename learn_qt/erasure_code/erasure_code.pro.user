@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.7.0, 2013-07-07T12:49:48. -->
+<!-- Written by QtCreator 2.7.0, 2013-07-07T13:24:26. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -79,7 +79,7 @@
        <value type="QString">-r</value>
       </valuelist>
       <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
-      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">-r -w </value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
@@ -98,7 +98,7 @@
        <value type="QString">-r</value>
       </valuelist>
       <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
-      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">-r -w clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
@@ -109,11 +109,11 @@
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Qt 4.8.3 in PATH (System) Release</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Debug</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
-    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory">/home/python27/Documents/learn_tech/learn_qt/Dialog-build-desktop-Qt_4_8_3_in_PATH__System__Release</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory">/home/python27/Documents/code/learn_qt/build-erasure_code-Desktop-Debug</value>
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
@@ -138,7 +138,7 @@
        <value type="QString">-r</value>
       </valuelist>
       <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
-      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">-r -w </value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
@@ -157,7 +157,7 @@
        <value type="QString">-r</value>
       </valuelist>
       <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
-      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">-r -w clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
@@ -168,11 +168,11 @@
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Qt 4.8.3 in PATH (System) Debug</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
-    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory">/home/python27/Documents/learn_tech/learn_qt/Dialog-build-desktop-Qt_4_8_3_in_PATH__System__Debug</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory">/home/python27/Documents/code/learn_qt/build-erasure_code-Desktop-Release</value>
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.BuildConfigurationCount">2</value>
@@ -184,7 +184,7 @@
      <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Deploy</value>
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">1</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">No deployment</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Deploy locally</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
    </valuemap>
@@ -221,12 +221,12 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Dialog</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">erasure_code</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/python27/Documents/learn_tech/learn_qt/Dialog/Dialog.pro</value>
+    <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/python27/Documents/learn_tech/learn_qt/erasure_code/erasure_code.pro</value>
     <value type="int" key="Qt4ProjectManager.Qt4RunConfiguration.BaseEnvironmentBase">2</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">Dialog.pro</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">erasure_code.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseTerminal">false</value>
     <valuelist type="QVariantList" key="Qt4ProjectManager.Qt4RunConfiguration.UserEnvironmentChanges"/>
