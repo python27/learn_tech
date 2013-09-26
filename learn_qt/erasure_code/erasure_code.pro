@@ -13,28 +13,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        dialog.cpp \
-    package.cpp \
-    mathFunction.cpp \
-    LT_TEXT.cpp \
-    LT_BMP.cpp \
-    GF2_LDPC_BMP.cpp \
-    GF2_LDPC.cpp \
-    bmp.cpp \
-    Cascade_BMP.cpp \
-    Cascade_TEXT.cpp \
-    GF2_LDPC_TEXT.cpp
+        dialog.cpp
 
-HEADERS  += dialog.h \
-    package.h \
-    mathFunction.h \
-    LT_TEXT.h \
-    LT_BMP.h \
-    GF2_LDPC_BMP.h \
-    GF2_LDPC.h \
-    bmp.h \
-    Cascade_BMP.h \
-    Cascade_TEXT.h \
-    GF2_LDPC_TEXT.h
+HEADERS  += dialog.h
 
 FORMS    += dialog.ui
