@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <set>
-#include "Node.h"
+#include "node.h"
 
 int main()
 {
