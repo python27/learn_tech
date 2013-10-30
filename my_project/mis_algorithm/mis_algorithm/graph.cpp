@@ -1,3 +1,18 @@
+/*****************************************************************************
+** FileName:    graph.cpp
+** RelateFile:  test_graph.cpp
+** Version:     1.0
+** Author:      Xinfeng Li
+** Date:        2013/10/30
+**
+** Description: This file is used to declare the Graph class, which mainly used 
+**              by the Graph class.
+** Note:		All the function description has been commented in the graph.h
+**              header file, please refer to it.
+**              
+** Copyright (C), 2013, Xinfeng Li, Zhejiang University             
+**
+*****************************************************************************/
 #include <cstdlib>
 #include <ctime>
 #include <cmath>

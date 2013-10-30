@@ -1,3 +1,16 @@
+/*****************************************************************************
+** FileName:    graph.h
+** RelateFile:  graph.cpp test_graph.cpp
+** Version:     1.0
+** Author:      Xinfeng Li
+** Date:        2013/10/30
+**
+** Description: This file is used to declare the Graph class, which mainly used 
+**              by the Graph class.
+**              
+** Copyright (C), 2013, Xinfeng Li, Zhejiang University             
+**
+*****************************************************************************/
 #ifndef MIS_GRAPH_H_
 #define MIS_GRAPH_H_
 
@@ -14,6 +27,7 @@ struct Edge
     long end_;          // edge end id
     double weight_;     // edge weight
 
+    // constructor
     Edge(long s, long e, double w):start_(s), end_(e), weight_(w)
     {}
 
@@ -31,22 +45,42 @@ private:
     std::vector<Node> nodes_;       // node set
     std::vector<Edge> edges_;       // edge set
 private:
-    static int X_MAX;
-    static int Y_MAX;
+    static int X_MAX;               // ploting screen max width
+    static int Y_MAX;               // ploting screen max height
 public:
-    // constructor
+    /*********************************************************** 
+     * constructor
+     * 
+     * Input:
+     * n - number of nodes
+     * radius - boarding radius of every node
+     *
+     * Output:
+     * A whole graph
+     ***********************************************************/
     Graph(long n, int radius);
 
-    // distance from nodes_[i] to nodes_[j]
+    /************************************************************ 
+     * return distance from node i to node j
+     ***********************************************************/
     double distance(long i, long j) const;
 
-    // add edge from nodes_[i] to nodes_[j]
+    /*************************************************************
+     * Add edge to the graph
+     * Input:
+     * start - edge start point
+     * end - edge end point
+     * weight - edge weight, in this example it represent distance
+     *          from start to end
+     ************************************************************/
     void addEdge(long start, long end, double w);
 
     void printGraph() const;
 
 public:
-    // set plot screen weight and height
+    /************************************************************* 
+     * reset the plot zone height and width
+     *************************************************************/
     static void setWidthHeight(int w, int h);
 };
 
