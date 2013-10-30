@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "graph.h"
 
 namespace Ui {
 class MainWindow;
@@ -14,9 +15,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+protected:
+    void paintEvent(QPaintEvent *);
     
+private slots:
+    void on_actionRandom_triggered();
+
+    void on_actionQuit_triggered();
+
 private:
     Ui::MainWindow *ui;
+    Graph* pGraph;
 };
 
 #endif // MAINWINDOW_H

@@ -14,6 +14,10 @@
 #ifndef MIS_GRAPH_H_
 #define MIS_GRAPH_H_
 
+#include <QtGui>        // Qt dependency
+#include <QtCore>       // Qt dependency
+#include <QPainter>     // Qt dependency
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -76,6 +80,11 @@ public:
     void addEdge(long start, long end, double w);
 
     void printGraph() const;
+
+    /*************************************************************
+     * paint the current graph
+     *************************************************************/
+    void paintGraph(QPainter &painter) const;
 
 public:
     /************************************************************* 

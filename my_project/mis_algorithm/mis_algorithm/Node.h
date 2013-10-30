@@ -92,7 +92,7 @@ public:
     inline int getNLower() const
     {
         long cnt = 0;
-        for (set<long>::iterator it = neighbours_.begin(); 
+        for (std::set<long>::iterator it = neighbours_.begin();
                                  it != neighbours_.end(); ++it)
         {
             if (*it < id_)
@@ -114,7 +114,7 @@ public:
         std::cout << "Radius: \t\t" << boardRadius_ << std::endl; 
 
         std::cout << "Neighbors: \t\t" << "{";
-        for (set<long>::iterator it = neighbours_.begin(); it != neighbours_.end(); ++it)
+        for (std::set<long>::iterator it = neighbours_.begin(); it != neighbours_.end(); ++it)
         {
             std::cout << " " << *it;
         }

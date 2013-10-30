@@ -13,6 +13,10 @@
 ** Copyright (C), 2013, Xinfeng Li, Zhejiang University             
 **
 *****************************************************************************/
+#include <QtGui>
+#include <QtCore>
+#include <QPainter>
+
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -33,8 +37,8 @@ Graph::Graph(long n, int radius)
 	for (long i = 0; i < nodeNum_; ++i)
 	{
 		// create the single node
-		double xx = std::rand() % X_MAX;
-		double yy = std::rand() % Y_MAX;
+        double xx = std::rand() % (X_MAX - 100) + 50;
+        double yy = std::rand() % (Y_MAX - 100) + 50;
 		Node tmp(i, xx, yy, radius);
 
 		nodes_.push_back(tmp);
@@ -54,6 +58,7 @@ Graph::Graph(long n, int radius)
 				nodes_[i].addNeighbour(j);
 				nodes_[j].addNeighbour(i);
 				addEdge(i, j, d);
+                //addEdge(j, i, d);
 			}
 		}
 	}
@@ -90,6 +95,11 @@ void Graph::printGraph() const
 	cout << "Screen Size: (" << X_MAX << " * " << Y_MAX << ")" << endl;
 	cout << "Board Radius:" << nodes_[0].boardRadius_ << endl;
 	cout << "Node Number: " << nodeNum_ << endl;
+    cout << "Nodes:" << endl;
+    for (long i = 0; i < nodeNum_; ++i)
+    {
+        nodes_[i].printNode();
+    }
 	cout << "Edge Number: " << edgeNum_ << endl;
 	cout << "Edges: " << "{ ";
 	for (long i = 0; i < edgeNum_; ++i)
@@ -98,4 +108,40 @@ void Graph::printGraph() const
 	} 
 	cout << " }" << endl;
 	cout << "****************Graph Info END****************" << endl;
+}
+
+void Graph::paintGraph(QPainter &painter) const
+{
+    // paint all the nodes based on their state
+    for (long i = 0; i < nodeNum_; ++i)
+    {
+        switch(nodes_[i].currentState_)
+        {
+            case CANDIDATE: painter.setBrush(Qt::black);
+                            painter.setPen(QColor(0,0,0));
+                            break;
+            case DOMINATOR: painter.setBrush(Qt::red);
+                            painter.setPen(QColor(255, 0, 0));
+                            break;
+            case DOMINATEE: painter.setBrush(Qt::green);
+                            painter.setPen(QColor(0, 255, 0));
+                            break;
+            case CONNECTOR: painter.setBrush(Qt::blue);
+                            painter.setPen(QColor(0, 0, 255));
+                            break;
+        }
+
+        painter.drawEllipse(nodes_[i].position_.first, nodes_[i].position_.second, 5, 5);
+    }
+
+    // reset brush and pen, paint the edge
+    painter.setBrush(Qt::black);
+    painter.setPen(QColor(0,0,0));
+    for(long i = 0; i < edgeNum_; ++i)
+    {
+        long s = edges_[i].start_;
+        long e = edges_[i].end_;
+        painter.drawLine(nodes_[s].position_.first, nodes_[s].position_.second,
+                         nodes_[e].position_.second, nodes_[e].position_.second);
+    }
 }
