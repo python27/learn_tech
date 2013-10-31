@@ -23,6 +23,10 @@ private slots:
 
     void on_actionQuit_triggered();
 
+    void on_actionMIS_triggered();
+
+    void on_actionExample_triggered();
+
 private:
     Ui::MainWindow *ui;
     Graph* pGraph;

@@ -52,6 +52,9 @@ private:
     static int X_MAX;               // ploting screen max width
     static int Y_MAX;               // ploting screen max height
 public:
+
+    Graph();
+
     /*********************************************************** 
      * constructor
      * 
@@ -85,6 +88,31 @@ public:
      * paint the current graph
      *************************************************************/
     void paintGraph(QPainter &painter) const;
+
+public:// these member function used by MIS Algorithm
+    /*************************************************************
+     * return if all nodes' states have been changed
+     *************************************************************/
+    bool allNodeStateChanged() const;
+
+    /********************************************************************
+     * boardcast Message from srcId to all its neighbours
+     ********************************************************************/
+    void broadcastMessage(long srcId, NodeState s);
+
+    /*********************************************************************
+     * MIS Algorithm: find all critical nodes in the network
+     *
+     * Main Idea:
+     * 1. If there is no neighbors whose ID is smaller than current node
+     *    set it to the DOMINATOR node, then boardcast DOMINATORMessage
+     * 2. if node is CANDIDATE && receive DOMINATORMessage, then set current
+     *    state to DOMINATEE, then boardcast DOMINATEEMessage
+     * 3. if node is CANDIDATE && receive DOMINATEEMessage, if src node id
+     *    is smaller than current node, then nLower--, if nLower == 0, set
+     *    current state to DOMINATOR, boardcast DOMINATORMessage
+     *********************************************************************/
+    void MISAlgorithm();
 
 public:
     /************************************************************* 

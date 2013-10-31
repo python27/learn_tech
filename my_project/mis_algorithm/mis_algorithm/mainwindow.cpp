@@ -56,3 +56,18 @@ void MainWindow::on_actionQuit_triggered()
 {
     QApplication::quit();
 }
+
+void MainWindow::on_actionMIS_triggered()
+{
+    pGraph->MISAlgorithm();
+    this->update();
+}
+
+void MainWindow::on_actionExample_triggered()
+{
+    int w = ui->centralWidget->width();
+    int h = ui->centralWidget->height();
+    pGraph->setWidthHeight(w, h);
+    pGraph = new Graph();
+    this->update();
+}

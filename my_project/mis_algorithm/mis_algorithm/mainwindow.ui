@@ -34,6 +34,7 @@
      <string>Graph</string>
     </property>
     <addaction name="actionRandom"/>
+    <addaction name="actionExample"/>
    </widget>
    <widget class="QMenu" name="menuAlgorithm">
     <property name="title">
@@ -67,6 +68,11 @@
   <action name="actionQuit">
    <property name="text">
     <string>quit</string>
+   </property>
+  </action>
+  <action name="actionExample">
+   <property name="text">
+    <string>example</string>
    </property>
   </action>
  </widget>
