@@ -1,3 +1,4 @@
-build-mis_algorihtm-Qt_4_8_0_msvc2010-Debug/
-budid-mis_algorithm-Qt_4_8_0_msvc2010-Release/
-*.user
+build-mis_algorithm-Qt_4_8_0_msvc2010-Debug/
+build-mis_algorithm-Qt_4_8_0_msvc2010-Release/
+mis_algorithm/*.user
+mis_algorithm/*.5pre1
