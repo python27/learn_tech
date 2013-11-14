@@ -71,3 +71,9 @@ void MainWindow::on_actionExample_triggered()
     pGraph = new Graph();
     this->update();
 }
+
+void MainWindow::on_actionMCDS_triggered()
+{
+    pGraph->MCDSAlgorithm();
+    this->update();
+}

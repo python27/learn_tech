@@ -27,6 +27,8 @@ private slots:
 
     void on_actionExample_triggered();
 
+    void on_actionMCDS_triggered();
+
 private:
     Ui::MainWindow *ui;
     Graph* pGraph;

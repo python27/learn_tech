@@ -4,6 +4,16 @@
 ** Version:     1.0
 ** Author:      Xinfeng Li
 ** Date:        2013/10/29
+** Update:      2013/11/12
+**
+** Log
+** --------------------------------------------------------------------------
+** Time         Author          revise
+** --------------------------------------------------------------------------
+** 2013/10/29   Xinfeng Li      created
+** 2013/11/12   Xinfeng Li      add some data memebers and method memembers to
+**                              adapted to the MCDS algorithm
+** --------------------------------------------------------------------------
 **
 ** Description: This file is used to declare the Node class, which mainly used 
 **              by the Graph class.
@@ -14,6 +24,7 @@
 #ifndef MIS_NODE_H
 #define MIS_NODE_H
 
+#include "message.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -23,7 +34,7 @@
 /*********************************************************
  * Node status definition
  ********************************************************/
-enum NodeState{CANDIDATE, DOMINATOR, DOMINATEE, CONNECTOR};
+enum NodeState { CANDIDATE, DOMINATOR, DOMINATEE, CONNECTOR };
 
 
 /*****************************************************************************
@@ -38,13 +49,25 @@ struct Node
     NodeState currentState_;                    // current node state
     NodeState receivedState_;                   // receive message state
 
+    // these memember used by MCDS algorithm
+    // update by Xinfeng Li, 2013/11/12
+    RequestMsg* pRequestMsg_;                   // requestMsg pointer
+    bool receivedRequestMsg_;                   // whether receive any requestMsg
+    ReplyMsg* pReplyMsg_;                       // replayMsg pointer
+    bool hasReplyMsg_;                          // whether already has replyMeg
+
+
 public:
     // constructor
     Node():id_(0), 
            position_(0.0, 0.0), 
            boardRadius_(0),
            currentState_(CANDIDATE),
-           receivedState_(CANDIDATE)
+           receivedState_(CANDIDATE),
+           pRequestMsg_(NULL),
+           receivedRequestMsg_(false),
+           pReplyMsg_(NULL),
+           hasReplyMsg_(false)
     {}
     
     // constructor
@@ -52,7 +75,11 @@ public:
                                                      position_(xx, yy),
                                                      boardRadius_(radius),
                                                      currentState_(CANDIDATE),
-                                                     receivedState_(CANDIDATE)
+                                                     receivedState_(CANDIDATE),
+                                                     pRequestMsg_(NULL),
+                                                     receivedRequestMsg_(false),
+                                                     pReplyMsg_(NULL),
+                                                     hasReplyMsg_(false)
     {}
 
 
