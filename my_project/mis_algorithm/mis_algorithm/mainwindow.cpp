@@ -71,7 +71,7 @@ void MainWindow::on_actionExample_triggered()
     int h = ui->centralWidget->height();
     pGraph->setWidthHeight(w, h);
     //pGraph = new Graph();
-    //pGraph.reset(new Graph());
+    pGraph.reset(new Graph());
     this->update();
 }
 
