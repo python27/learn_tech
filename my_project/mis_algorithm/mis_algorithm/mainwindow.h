@@ -31,7 +31,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Graph* pGraph;
+    //Graph* pGraph;
+    std::auto_ptr<Graph> pGraph;
 };
 
 #endif // MAINWINDOW_H
