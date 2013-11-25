@@ -1,4 +1,4 @@
-# Some code about controllibility of complex networks
+# controllibility of complex networks
 ## Contents
 * getDriverNodeNumber.m
 * getDriverNode.m
