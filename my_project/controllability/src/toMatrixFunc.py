@@ -1,6 +1,22 @@
 import os
 
 def toMatrixFunc(filename):
+    """
+    convert the .net file specified by the filename to 
+    adjancency matrix of the corresponding graph
+
+    Input:
+    filename -- the filename of net file
+
+    Output:
+    new file -- contains the matrix of the original graph of filename
+
+    Note: this function only applies to the symmetric matrix
+          DON'T use it for the unsymmetric matrix graph
+
+    Author: Xinfeng Li (silfer.lee AT gmail.com)
+    Date:   2013/11/26
+    """
 	nodeNum = 0
 
 	f = open(filename, "r")
