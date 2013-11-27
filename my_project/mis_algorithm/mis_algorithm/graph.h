@@ -12,6 +12,8 @@
 ** --------------------------------------------------------------------------
 ** 2013/10/30   Xinfeng Li      created
 ** 2013/11/12   Xinfeng Li      add MCDS algorithm
+** 2013/11/27   Xinfeng Li      add keyLinks_ attribution to the graph
+**                              also addKeyLinks member functions
 ** --------------------------------------------------------------------------
 **
 ** Description: This file is used to declare the Graph class, which mainly used 
@@ -34,6 +36,7 @@
 #include <algorithm>
 #include "node.h"
 
+
 struct Edge
 {
     long start_;        // edge start id
@@ -48,7 +51,20 @@ struct Edge
     {
         std::cout << " (" << start_ << ", " << end_ << ", " << weight_ << ") ";
     }
+
+    bool operator<(const Edge &other) const
+    {
+        if (start_ != other.start_)
+        {
+            return start_ < other.start_;
+        }
+        else
+        {
+            return end_ < other.end_;
+        }
+    }
 };
+
 
 class Graph
 {
@@ -57,6 +73,7 @@ private:
     long edgeNum_;                  // edge num
     std::vector<Node> nodes_;       // node set
     std::vector<Edge> edges_;       // edge set
+    std::set<Edge> keyLinks_;       // key edges of the graph
 private:
     static int X_MAX;               // ploting screen max width
     static int Y_MAX;               // ploting screen max height
@@ -90,6 +107,26 @@ public:
      *          from start to end
      ************************************************************/
     void addEdge(long start, long end, double w);
+
+
+    /************************************************************
+     * Add the edge to the key links of the graph
+     *
+     * version1:
+     * Input:
+     * start -- start point of the edge to be added
+     * end -- end point of the edge to be added
+     * w -- the weight of the edge to be added
+     *
+     * version2:
+     * Input:
+     * e - the edge to be added
+     *
+     * update by Xinfeng Li
+     * Date: 2013/11/27
+     ************************************************************/
+    void addKeyLink(long start, long end, double w);
+    void addKeyLink(const Edge& e);
 
     void printGraph() const;
 

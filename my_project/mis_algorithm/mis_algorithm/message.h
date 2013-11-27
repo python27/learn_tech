@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
 #include <algorithm>
 
 struct RequestMsg
@@ -43,7 +44,8 @@ struct RequestMsg
     // whether the message pass by the id node
     bool containNode(long id) const
     {
-        if (find(msgPath_.begin(), msgPath_.end(), id) != msgPath_.end())
+        if (find(msgPath_.begin(), msgPath_.end(), id) != msgPath_.end() ||
+            id == msgSrc_)
         {
             return true;
         }
@@ -89,6 +91,7 @@ struct ReplyMsg
         }
         broadcastCnt_ = 1;
     }
+
 };
 
 #endif // MESSAGE_H

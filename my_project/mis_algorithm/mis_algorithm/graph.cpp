@@ -16,6 +16,8 @@
 ** 2013/11/14   Xinfeng Li      debug the MCDS algorithm, revise the paintGraph
 **                              function to indicate the key path between DOMINATOR
 **                              nodes and CONNECTOR
+** 2013/11/27   Xinfeng Li      revise MCDS algorithm to calculate the key links in
+**                              the graph
 ** --------------------------------------------------------------------------
 **
 ** Description: This file is used to declare the Graph class, which mainly used 
@@ -44,6 +46,7 @@ int Graph::Y_MAX = 400;
 
 Graph::Graph(long n, int radius)
 {
+    keyLinks_.clear();
 	nodeNum_ = n;
 	// create all the nodes
 	std::srand(time(NULL));
@@ -126,6 +129,18 @@ double Graph::distance(long i, long j) const
 	return std::sqrt(dx * dx + dy * dy);
 }
 
+void Graph::addKeyLink(long start, long end, double w)
+{
+    Edge e(start, end, w);
+    keyLinks_.insert(e);
+}
+
+
+void Graph::addKeyLink(const Edge& e)
+{
+    keyLinks_.insert(e);
+}
+
 void Graph::addEdge(long start, long end, double w)
 {
 	Edge tmp(start, end, w);
@@ -197,7 +212,7 @@ void Graph::paintGraph(QPainter &painter) const
         long s = edges_[i].start_;
         long e = edges_[i].end_;
 
-#if 1
+#if 0
         // whether the two nodes are CONNECTOR or DOMINATOR
         if ( (nodes_[s].currentState_ == DOMINATOR || nodes_[s].currentState_ == CONNECTOR) &&
              (nodes_[e].currentState_ == DOMINATOR || nodes_[e].currentState_ == CONNECTOR) )
@@ -212,6 +227,23 @@ void Graph::paintGraph(QPainter &painter) const
         }
 #endif //
 
+
+        painter.drawLine(nodes_[s].position_.first, nodes_[s].position_.second,
+                         nodes_[e].position_.first, nodes_[e].position_.second);
+    }
+
+    // if the keylinks is not empty, paint the keylinks
+    if (keyLinks_.empty())
+    {
+        return;
+    }
+
+    painter.setBrush(Qt::red);
+    painter.setPen(QColor(255, 0, 0));
+    for (auto it = keyLinks_.begin(); it != keyLinks_.end(); ++it)
+    {
+        long s = it->start_;
+        long e = it->end_;
 
         painter.drawLine(nodes_[s].position_.first, nodes_[s].position_.second,
                          nodes_[e].position_.first, nodes_[e].position_.second);
@@ -349,6 +381,21 @@ void Graph::MCDSAlgorithm()
                         nodes_[*it].receivedRequestMsg_ = true;
                         nodes_[*it].hasReplyMsg_ = true;
                         nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+#if 0
+                        // get the all the nodes on the key links based on the Reply Message
+                        std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
+                                                        (nodes_[*it].pReplyMsg_->msgPath_).end()   );
+                        tempAllNodes.insert(tempAllNodes.begin(), *it);
+                        tempAllNodes.push_back(nodes_[*it].pReplyMsg_->msgSrc_);
+
+                        // add all the key links linearly by the key nodes one by one
+                        // into the keyLinks_ data member of the graph
+                        for (int i = 0; i < tempAllNodes.size() - 1; ++i)
+                        {
+                            addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                        }
+#endif //0
+
                     }
 
                 }
@@ -389,7 +436,8 @@ void Graph::MCDSAlgorithm()
                         // although neighbour has received requestMsg, but the msgSrc
                         // it larger than the current message source node
                         else if ( nodes_[*it].pRequestMsg_ != NULL &&
-                                  (nodes_[*it].pRequestMsg_)->msgSrc_ > (nodes_[i].pRequestMsg_)->msgSrc_)
+                                  !(nodes_[i].pRequestMsg_->containNode(*it)) &&
+                                  (nodes_[*it].pRequestMsg_)->msgSrc_ > (nodes_[i].pRequestMsg_)->msgSrc_ )
                         {
                             nodes_[*it].receivedRequestMsg_ = true;
                             delete nodes_[*it].pRequestMsg_;
@@ -403,21 +451,51 @@ void Graph::MCDSAlgorithm()
                         // node hasn't generated any replyMsg &&
                         // the index of the node is not equal to message source node id
                         if ( nodes_[*it].pReplyMsg_ == NULL &&
-                             *it != (nodes_[i].pRequestMsg_)->msgSrc_)
+                             !(nodes_[i].pRequestMsg_->containNode(*it)) )
                         {
                             nodes_[*it].receivedRequestMsg_ = true;
                             nodes_[*it].hasReplyMsg_ = true;
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+
+#if 0
+                            // get the all the nodes on the key links based on the Reply Message
+                            std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
+                                                            (nodes_[*it].pReplyMsg_->msgPath_).end() );
+                            tempAllNodes.insert(tempAllNodes.begin(), *it);
+                            tempAllNodes.push_back(nodes_[*it].pReplyMsg_->msgSrc_);
+
+                            // add all the key links linearly by the key nodes one by one
+                            // into the keyLinks_ data member of the graph
+                            for (int i = 0; i < tempAllNodes.size() - 1; ++i)
+                            {
+                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                            }
+#endif //0
                         }
                         // DOMINATOR nodes which has generated ReplyMessage, but the message
                         // source node index is large than current message node index, update
                         else if (nodes_[*it].pReplyMsg_ != NULL &&
+                                 !(nodes_[i].pRequestMsg_->containNode(*it)) &&
                                  nodes_[*it].pReplyMsg_->msgSrc_ > nodes_[i].pRequestMsg_->msgSrc_)
                         {
                             delete nodes_[*it].pReplyMsg_;
                             nodes_[*it].pReplyMsg_ = NULL;
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
                             nodes_[*it].hasReplyMsg_ = true;
+#if 0
+                            // get the all the nodes on the key links based on the Reply Message
+                            std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
+                                                            (nodes_[*it].pReplyMsg_->msgPath_).end() );
+                            tempAllNodes.insert(tempAllNodes.begin(), *it);
+                            tempAllNodes.push_back(nodes_[*it].pReplyMsg_->msgSrc_);
+
+                            // add all the key links linearly by the key nodes one by one
+                            // into the keyLinks_ data member of the graph
+                            for (int i = 0; i < tempAllNodes.size() - 1; ++i)
+                            {
+                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                            }
+#endif //0
                         }
 
                     }
@@ -456,6 +534,7 @@ void Graph::MCDSAlgorithm()
                         // although neighbour has received requestMsg, but the msgSrc
                         // it larger than the current message source node
                         else if ( nodes_[*it].pRequestMsg_ != NULL &&
+                                  !(nodes_[i].pRequestMsg_->containNode(*it)) &&
                                   (nodes_[*it].pRequestMsg_)->msgSrc_ > (nodes_[i].pRequestMsg_)->msgSrc_)
                         {
                             nodes_[*it].receivedRequestMsg_ = true;
@@ -470,21 +549,52 @@ void Graph::MCDSAlgorithm()
                         // node hasn't generated any replyMsg &&
                         // the index of the node is not equal to message source node id
                         if ( nodes_[*it].pReplyMsg_ == NULL &&
-                             *it != (nodes_[i].pRequestMsg_)->msgSrc_)
+                             !(nodes_[i].pRequestMsg_->containNode(*it)) )
                         {
                             nodes_[*it].receivedRequestMsg_ = true;
                             nodes_[*it].hasReplyMsg_ = true;
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+#if 0
+                            // get the all the nodes on the key links based on the Reply Message
+                            std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
+                                                            (nodes_[*it].pReplyMsg_->msgPath_).end() );
+                            tempAllNodes.insert(tempAllNodes.begin(), *it);
+                            tempAllNodes.push_back(nodes_[*it].pReplyMsg_->msgSrc_);
+
+                            // add all the key links linearly by the key nodes one by one
+                            // into the keyLinks_ data member of the graph
+                            for (int i = 0; i < tempAllNodes.size() - 1; ++i)
+                            {
+                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                            }
+#endif //0
                         }
                         // DOMINATOR nodes which has generated ReplyMessage, but the message
                         // source node index is large than current message node index, update
                         else if (nodes_[*it].pReplyMsg_ != NULL &&
+                                 !(nodes_[i].pRequestMsg_->containNode(*it)) &&
                                  nodes_[*it].pReplyMsg_->msgSrc_ > nodes_[i].pRequestMsg_->msgSrc_)
                         {
                             delete nodes_[*it].pReplyMsg_;
                             nodes_[*it].pReplyMsg_ = NULL;
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
                             nodes_[*it].hasReplyMsg_ = true;
+
+#if 0
+                            // get the all the nodes on the key links based on the Reply Message
+                            std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
+                                                            (nodes_[*it].pReplyMsg_->msgPath_).end() );
+                            tempAllNodes.insert(tempAllNodes.begin(), *it);
+                            tempAllNodes.push_back(nodes_[*it].pReplyMsg_->msgSrc_);
+
+                            // add all the key links linearly by the key nodes one by one
+                            // into the keyLinks_ data member of the graph
+                            for (int i = 0; i < tempAllNodes.size() - 1; ++i)
+                            {
+                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                            }
+
+#endif //0
                         }
 
                     }
@@ -510,6 +620,29 @@ void Graph::MCDSAlgorithm()
                     nodes_[neighbour].currentState_ = CONNECTOR;
                 }
             }
+        }
+    }
+
+
+    // find all the key links in the graph
+    // add them to the keyLinks_ data member
+    for (long i = 0; i < nodeNum_; ++i)
+    {
+        if (nodes_[i].currentState_ == DOMINATOR && nodes_[i].pReplyMsg_ != NULL)
+        {
+            // get the all the nodes on the key links based on the Reply Message
+            std::vector<long> tempAllNodes( (nodes_[i].pReplyMsg_->msgPath_).begin(),
+                                            (nodes_[i].pReplyMsg_->msgPath_).end() );
+            tempAllNodes.insert(tempAllNodes.begin(), i);
+            tempAllNodes.push_back(nodes_[i].pReplyMsg_->msgSrc_);
+
+            // add all the key links linearly by the key nodes one by one
+            // into the keyLinks_ data member of the graph
+            for (int k = 0; k < tempAllNodes.size() - 1; ++k)
+            {
+                addKeyLink(tempAllNodes[k], tempAllNodes[k+1], 0);
+            }
+
         }
     }
 
