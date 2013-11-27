@@ -4,6 +4,19 @@
 ** Version:     1.0
 ** Author:      Xinfeng Li
 ** Date:        2013/10/30
+** Update:      2013/11/12
+**
+** Log
+** --------------------------------------------------------------------------
+** Time         Author          revise
+** --------------------------------------------------------------------------
+** 2013/10/30   Xinfeng Li      created
+** 2013/11/12   Xinfeng Li      add MCDS algorithm
+** 2013/11/13   Xinfeng Li      finish editing MCDS algorithm
+** 2013/11/14   Xinfeng Li      debug the MCDS algorithm, revise the paintGraph
+**                              function to indicate the key path between DOMINATOR
+**                              nodes and CONNECTOR
+** --------------------------------------------------------------------------
 **
 ** Description: This file is used to declare the Graph class, which mainly used 
 **              by the Graph class.
@@ -22,6 +35,7 @@
 #include <cmath>
 #include "node.h"
 #include "graph.h"
+#include "message.h"
 using std::cout;
 using std::endl;
 
@@ -149,6 +163,10 @@ void Graph::printGraph() const
 
 void Graph::paintGraph(QPainter &painter) const
 {
+    // reset brush and pen, paint the edge
+    painter.setBrush(Qt::black);
+    painter.setPen(QColor(0,0,0));
+
     // paint all the nodes based on their state
     for (long i = 0; i < nodeNum_; ++i)
     {
@@ -178,6 +196,23 @@ void Graph::paintGraph(QPainter &painter) const
     {
         long s = edges_[i].start_;
         long e = edges_[i].end_;
+
+#if 1
+        // whether the two nodes are CONNECTOR or DOMINATOR
+        if ( (nodes_[s].currentState_ == DOMINATOR || nodes_[s].currentState_ == CONNECTOR) &&
+             (nodes_[e].currentState_ == DOMINATOR || nodes_[e].currentState_ == CONNECTOR) )
+        {
+            painter.setBrush(Qt::red);
+            painter.setPen(QColor(255, 0, 0));
+        }
+        else
+        {
+            painter.setBrush(Qt::black);
+            painter.setPen(QColor(0, 0, 0));
+        }
+#endif //
+
+
         painter.drawLine(nodes_[s].position_.first, nodes_[s].position_.second,
                          nodes_[e].position_.first, nodes_[e].position_.second);
     }
@@ -273,4 +308,210 @@ void Graph::MISAlgorithm()
             }
         }
     }
+}
+
+void Graph::MCDSAlgorithm()
+{
+    // step 1. DOMINATOR nodes broadcast Request_DOMI message
+    for (long i = 0; i < nodeNum_; ++i)
+    {
+        if (nodes_[i].currentState_ == DOMINATOR)
+        {
+            // created Request_DOMI message
+            nodes_[i].pRequestMsg_ = new RequestMsg(i, 1);
+
+            // boardcast to its every neighbour
+            for (std::set<long>::iterator it = nodes_[i].neighbours_.begin();
+                                          it != nodes_[i].neighbours_.end();  ++it)
+            {
+                if (nodes_[*it].currentState_ == DOMINATEE)
+                {
+                    // node hasn't received any requestMsg && message hasn't
+                    // been broadcasted to this node
+                    if ( nodes_[*it].receivedRequestMsg_ == false &&
+                         nodes_[*it].pRequestMsg_ == NULL &&
+                         !(nodes_[i].pRequestMsg_->containNode(*it)) )
+                    {
+                        nodes_[*it].receivedRequestMsg_ = true;
+                        nodes_[*it].pRequestMsg_ = new RequestMsg(*(nodes_[i].pRequestMsg_));
+                        (nodes_[*it].pRequestMsg_)->appendPath(*it);
+                    }
+                }
+                else if (nodes_[*it].currentState_ == DOMINATOR)
+                {
+                    // node hasn't generated any replyMsg &&
+                    // the index of the node is not equal to message source node id
+                    if ( nodes_[*it].receivedRequestMsg_ == false &&
+                         nodes_[*it].pRequestMsg_ == NULL &&
+                         nodes_[*it].hasReplyMsg_ == false &&
+                         *it != (nodes_[i].pRequestMsg_)->msgSrc_)
+                    {
+                        nodes_[*it].receivedRequestMsg_ = true;
+                        nodes_[*it].hasReplyMsg_ = true;
+                        nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+                    }
+
+                }
+            }
+
+            // free Request_DOMI message
+            delete nodes_[i].pRequestMsg_;
+            nodes_[i].pRequestMsg_ = NULL;
+        }
+    }
+
+    // step 2. All the nodes which received Request_DOMI message
+    //         broadcast Request_DOMI message to its neighbours
+    for (long i = 0; i < nodeNum_; ++i)
+    {
+        // all the DOMINATEE nodes broadcast message
+        // DOMINATOR nodes just wait to received message and
+        // generate ReplyMsg, no need to broadcast message
+        if (nodes_[i].currentState_ == DOMINATEE)
+        {
+            if (nodes_[i].pRequestMsg_ != NULL)
+            {
+                // boardcast to its every neighbour
+                for (std::set<long>::iterator it = nodes_[i].neighbours_.begin();
+                                              it != nodes_[i].neighbours_.end();  ++it)
+                {
+                    if (nodes_[*it].currentState_ == DOMINATEE)
+                    {
+                        // node hasn't received any requestMsg && message hasn't
+                        // been broadcasted to this node
+                        if ( nodes_[*it].pRequestMsg_ == NULL &&
+                             !(nodes_[i].pRequestMsg_->containNode(*it)) )
+                        {
+                            nodes_[*it].receivedRequestMsg_ = true;
+                            nodes_[*it].pRequestMsg_ = new RequestMsg(*(nodes_[i].pRequestMsg_));
+                            (nodes_[*it].pRequestMsg_)->appendPath(*it);
+                        }
+                        // although neighbour has received requestMsg, but the msgSrc
+                        // it larger than the current message source node
+                        else if ( nodes_[*it].pRequestMsg_ != NULL &&
+                                  (nodes_[*it].pRequestMsg_)->msgSrc_ > (nodes_[i].pRequestMsg_)->msgSrc_)
+                        {
+                            nodes_[*it].receivedRequestMsg_ = true;
+                            delete nodes_[*it].pRequestMsg_;
+                            nodes_[*it].pRequestMsg_ = NULL;
+                            nodes_[*it].pRequestMsg_ = new RequestMsg(*(nodes_[i].pRequestMsg_));
+                            nodes_[*it].pRequestMsg_->appendPath(*it);
+                        }
+                    }
+                    else if (nodes_[*it].currentState_ == DOMINATOR)
+                    {
+                        // node hasn't generated any replyMsg &&
+                        // the index of the node is not equal to message source node id
+                        if ( nodes_[*it].pReplyMsg_ == NULL &&
+                             *it != (nodes_[i].pRequestMsg_)->msgSrc_)
+                        {
+                            nodes_[*it].receivedRequestMsg_ = true;
+                            nodes_[*it].hasReplyMsg_ = true;
+                            nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+                        }
+                        // DOMINATOR nodes which has generated ReplyMessage, but the message
+                        // source node index is large than current message node index, update
+                        else if (nodes_[*it].pReplyMsg_ != NULL &&
+                                 nodes_[*it].pReplyMsg_->msgSrc_ > nodes_[i].pRequestMsg_->msgSrc_)
+                        {
+                            delete nodes_[*it].pReplyMsg_;
+                            nodes_[*it].pReplyMsg_ = NULL;
+                            nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+                            nodes_[*it].hasReplyMsg_ = true;
+                        }
+
+                    }
+                }
+                delete nodes_[i].pRequestMsg_;
+                nodes_[i].pRequestMsg_ = NULL;
+            }
+        }
+    }
+
+    // step 3. same with step 2
+    for (long i = 0; i < nodeNum_; ++i)
+    {
+        // all the DOMINATEE nodes broadcast message
+        // DOMINATOR nodes just wait to received message and
+        // generate ReplyMsg, no need to broadcast message
+        if (nodes_[i].currentState_ == DOMINATEE)
+        {
+            if (nodes_[i].pRequestMsg_ != NULL)
+            {
+                // boardcast to its every neighbour
+                for (std::set<long>::iterator it = nodes_[i].neighbours_.begin();
+                                              it != nodes_[i].neighbours_.end();  ++it)
+                {
+                    if (nodes_[*it].currentState_ == DOMINATEE)
+                    {
+                        // node hasn't received any requestMsg && message hasn't
+                        // been broadcasted to this node
+                        if ( nodes_[*it].pRequestMsg_ == NULL &&
+                             !(nodes_[i].pRequestMsg_->containNode(*it)) )
+                        {
+                            nodes_[*it].receivedRequestMsg_ = true;
+                            nodes_[*it].pRequestMsg_ = new RequestMsg(*(nodes_[i].pRequestMsg_));
+                            (nodes_[*it].pRequestMsg_)->appendPath(*it);
+                        }
+                        // although neighbour has received requestMsg, but the msgSrc
+                        // it larger than the current message source node
+                        else if ( nodes_[*it].pRequestMsg_ != NULL &&
+                                  (nodes_[*it].pRequestMsg_)->msgSrc_ > (nodes_[i].pRequestMsg_)->msgSrc_)
+                        {
+                            nodes_[*it].receivedRequestMsg_ = true;
+                            delete nodes_[*it].pRequestMsg_;
+                            nodes_[*it].pRequestMsg_ = NULL;
+                            nodes_[*it].pRequestMsg_ = new RequestMsg(*(nodes_[i].pRequestMsg_));
+                            nodes_[*it].pRequestMsg_->appendPath(*it);
+                        }
+                    }
+                    else if (nodes_[*it].currentState_ == DOMINATOR)
+                    {
+                        // node hasn't generated any replyMsg &&
+                        // the index of the node is not equal to message source node id
+                        if ( nodes_[*it].pReplyMsg_ == NULL &&
+                             *it != (nodes_[i].pRequestMsg_)->msgSrc_)
+                        {
+                            nodes_[*it].receivedRequestMsg_ = true;
+                            nodes_[*it].hasReplyMsg_ = true;
+                            nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+                        }
+                        // DOMINATOR nodes which has generated ReplyMessage, but the message
+                        // source node index is large than current message node index, update
+                        else if (nodes_[*it].pReplyMsg_ != NULL &&
+                                 nodes_[*it].pReplyMsg_->msgSrc_ > nodes_[i].pRequestMsg_->msgSrc_)
+                        {
+                            delete nodes_[*it].pReplyMsg_;
+                            nodes_[*it].pReplyMsg_ = NULL;
+                            nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
+                            nodes_[*it].hasReplyMsg_ = true;
+                        }
+
+                    }
+                }
+                delete nodes_[i].pRequestMsg_;
+                nodes_[i].pRequestMsg_ = NULL;
+            }
+        }
+    }
+
+    // find all nodes in the ReplyMessage held by the DOMINATOR nodes
+    // if they are DONIMATEE state, then reset them to be CONNECTOR
+    for (long i = 0; i < nodeNum_; ++i)
+    {
+        if (nodes_[i].currentState_ == DOMINATOR && nodes_[i].pReplyMsg_ != NULL)
+        {
+            std::vector<long> pathNodes(nodes_[i].pReplyMsg_->msgPath_);
+            for (size_t j = 0; j < pathNodes.size(); ++j)
+            {
+                long neighbour = pathNodes[j];
+                if (nodes_[neighbour].currentState_ == DOMINATEE)
+                {
+                    nodes_[neighbour].currentState_ = CONNECTOR;
+                }
+            }
+        }
+    }
+
+    return;
 }

@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    pGraph.reset(new Graph());
 }
 
 MainWindow::~MainWindow()
@@ -45,9 +46,10 @@ void MainWindow::on_actionRandom_triggered()
     int h = ui->centralWidget->height();
     //std::cout << w << std::endl;
     //std::cout << h << std::endl;
-    pGraph->setWidthHeight(w, h);
-    pGraph = new Graph(numberofNodes, r);
+    Graph::setWidthHeight(w, h);
+    //pGraph = new Graph(numberofNodes, r);
     //pGraph->printGraph();
+    pGraph.reset(new Graph(numberofNodes, r));
     this->update();
 }
 
@@ -68,6 +70,13 @@ void MainWindow::on_actionExample_triggered()
     int w = ui->centralWidget->width();
     int h = ui->centralWidget->height();
     pGraph->setWidthHeight(w, h);
-    pGraph = new Graph();
+    //pGraph = new Graph();
+    pGraph.reset(new Graph());
+    this->update();
+}
+
+void MainWindow::on_actionMCDS_triggered()
+{
+    pGraph->MCDSAlgorithm();
     this->update();
 }

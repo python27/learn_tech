@@ -41,6 +41,7 @@
      <string>Algorithm</string>
     </property>
     <addaction name="actionMIS"/>
+    <addaction name="actionMCDS"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuGraph"/>
@@ -73,6 +74,11 @@
   <action name="actionExample">
    <property name="text">
     <string>example</string>
+   </property>
+  </action>
+  <action name="actionMCDS">
+   <property name="text">
+    <string>MCDS</string>
    </property>
   </action>
  </widget>

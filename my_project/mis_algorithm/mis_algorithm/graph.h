@@ -4,6 +4,15 @@
 ** Version:     1.0
 ** Author:      Xinfeng Li
 ** Date:        2013/10/30
+** Update:      2013/11/12
+**
+** Log
+** --------------------------------------------------------------------------
+** Time         Author          revise
+** --------------------------------------------------------------------------
+** 2013/10/30   Xinfeng Li      created
+** 2013/11/12   Xinfeng Li      add MCDS algorithm
+** --------------------------------------------------------------------------
 **
 ** Description: This file is used to declare the Graph class, which mainly used 
 **              by the Graph class.
@@ -113,6 +122,26 @@ public:// these member function used by MIS Algorithm
      *    current state to DOMINATOR, boardcast DOMINATORMessage
      *********************************************************************/
     void MISAlgorithm();
+
+    /**********************************************************************
+     * MCDSAlgorithm: find all the CONNECTOR node in the graph
+     *
+     * Main Idea:
+     * 1. all the DOMINATOR nodes broadcast Request_DOMI message to its
+     *    neighbours
+     * 2. if the neighbour is DOMINATEE node, then the neighbour add its
+     *    node index to the message path, then continue broadcast
+     *    Request_DOMI messge to its neighbour, until the message has been
+     *    boardcast at most 3 times
+     * 3. if the neighbour is DOMINATOR node, then it generate a Reply_DOMI
+     *    message to its neighbours
+     * 4. if the neighbours (step 3's) received Reply_DOMI, examine whether
+     *    its node index in the message path route, if yes, reset the node
+     *    set to CONNECTOR state. if no, do nothing. then broadcast the
+     *    Reply_DOMI message.
+     *
+     **********************************************************************/
+    void MCDSAlgorithm();
 
 public:
     /************************************************************* 

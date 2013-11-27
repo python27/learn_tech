@@ -16,6 +16,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     node.h \
-    graph.h
+    graph.h \
+    message.h
 
 FORMS    += mainwindow.ui
