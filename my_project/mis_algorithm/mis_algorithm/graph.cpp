@@ -18,6 +18,8 @@
 **                              nodes and CONNECTOR
 ** 2013/11/27   Xinfeng Li      revise MCDS algorithm to calculate the key links in
 **                              the graph
+** 2013/11/28   Xinfeng Li      Add BFS algorithm to find the final key links from the
+**                              possible key links with extra links
 ** --------------------------------------------------------------------------
 **
 ** Description: This file is used to declare the Graph class, which mainly used 
@@ -32,6 +34,9 @@
 #include <QtCore>
 #include <QPainter>
 
+#include <queue>
+#include <vector>
+#include <set>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -344,6 +349,9 @@ void Graph::MISAlgorithm()
 
 void Graph::MCDSAlgorithm()
 {
+    // store all the possible key links in the graph
+    std::set<Edge> curKeyLinks;
+
     // step 1. DOMINATOR nodes broadcast Request_DOMI message
     for (long i = 0; i < nodeNum_; ++i)
     {
@@ -381,7 +389,7 @@ void Graph::MCDSAlgorithm()
                         nodes_[*it].receivedRequestMsg_ = true;
                         nodes_[*it].hasReplyMsg_ = true;
                         nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
-#if 0
+#if 1
                         // get the all the nodes on the key links based on the Reply Message
                         std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
                                                         (nodes_[*it].pReplyMsg_->msgPath_).end()   );
@@ -392,7 +400,9 @@ void Graph::MCDSAlgorithm()
                         // into the keyLinks_ data member of the graph
                         for (int i = 0; i < tempAllNodes.size() - 1; ++i)
                         {
-                            addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                            Edge tmpEdge(tempAllNodes[i], tempAllNodes[i+1], 0);
+                            curKeyLinks.insert(tmpEdge);
+                            //addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
                         }
 #endif //0
 
@@ -457,7 +467,7 @@ void Graph::MCDSAlgorithm()
                             nodes_[*it].hasReplyMsg_ = true;
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
 
-#if 0
+#if 1
                             // get the all the nodes on the key links based on the Reply Message
                             std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
                                                             (nodes_[*it].pReplyMsg_->msgPath_).end() );
@@ -468,7 +478,9 @@ void Graph::MCDSAlgorithm()
                             // into the keyLinks_ data member of the graph
                             for (int i = 0; i < tempAllNodes.size() - 1; ++i)
                             {
-                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                Edge tmpEdge(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                curKeyLinks.insert(tmpEdge);
+                                //addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
                             }
 #endif //0
                         }
@@ -482,7 +494,7 @@ void Graph::MCDSAlgorithm()
                             nodes_[*it].pReplyMsg_ = NULL;
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
                             nodes_[*it].hasReplyMsg_ = true;
-#if 0
+#if 1
                             // get the all the nodes on the key links based on the Reply Message
                             std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
                                                             (nodes_[*it].pReplyMsg_->msgPath_).end() );
@@ -493,7 +505,9 @@ void Graph::MCDSAlgorithm()
                             // into the keyLinks_ data member of the graph
                             for (int i = 0; i < tempAllNodes.size() - 1; ++i)
                             {
-                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                Edge tmpEdge(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                curKeyLinks.insert(tmpEdge);
+                                //addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
                             }
 #endif //0
                         }
@@ -554,7 +568,7 @@ void Graph::MCDSAlgorithm()
                             nodes_[*it].receivedRequestMsg_ = true;
                             nodes_[*it].hasReplyMsg_ = true;
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
-#if 0
+#if 1
                             // get the all the nodes on the key links based on the Reply Message
                             std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
                                                             (nodes_[*it].pReplyMsg_->msgPath_).end() );
@@ -565,7 +579,9 @@ void Graph::MCDSAlgorithm()
                             // into the keyLinks_ data member of the graph
                             for (int i = 0; i < tempAllNodes.size() - 1; ++i)
                             {
-                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                Edge tmpEdge(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                curKeyLinks.insert(tmpEdge);
+                                //addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
                             }
 #endif //0
                         }
@@ -580,7 +596,7 @@ void Graph::MCDSAlgorithm()
                             nodes_[*it].pReplyMsg_ = new ReplyMsg( *(nodes_[i].pRequestMsg_) );
                             nodes_[*it].hasReplyMsg_ = true;
 
-#if 0
+#if 1
                             // get the all the nodes on the key links based on the Reply Message
                             std::vector<long> tempAllNodes( (nodes_[*it].pReplyMsg_->msgPath_).begin(),
                                                             (nodes_[*it].pReplyMsg_->msgPath_).end() );
@@ -591,7 +607,9 @@ void Graph::MCDSAlgorithm()
                             // into the keyLinks_ data member of the graph
                             for (int i = 0; i < tempAllNodes.size() - 1; ++i)
                             {
-                                addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                Edge tmpEdge(tempAllNodes[i], tempAllNodes[i+1], 0);
+                                curKeyLinks.insert(tmpEdge);
+                                //addKeyLink(tempAllNodes[i], tempAllNodes[i+1], 0);
                             }
 
 #endif //0
@@ -624,6 +642,64 @@ void Graph::MCDSAlgorithm()
     }
 
 
+    /*********************************************************************
+     * BFS the graph constructed by the current key Links to
+     * remove the extra links, thus get the final minimal connected
+     * dominator set
+     *
+     * Xinfeng Li
+     * 2013/11/28
+     **/
+
+    // store all the key nodes which ocuur in the current possible key links
+    std::set<long> curKeyNodes;
+
+    // difine the current adjancency matrix of the graph
+    // init and assign value
+    std::vector<std::vector<int> > matrix(nodeNum_, std::vector<int>(nodeNum_, 0));
+    for (std::set<Edge>::iterator it = curKeyLinks.begin(); it != curKeyLinks.end(); ++it)
+    {
+        matrix[it->start_][it->end_] = 1;
+        matrix[it->end_][it->start_] = 1;
+
+        curKeyNodes.insert(it->start_);
+        curKeyNodes.insert(it->end_);
+    }
+
+    // bfs algorithm
+    // Note: the graph may have more than one connected component
+    //       So add the curKeyNodes set to record which nodes that
+    //       that haven't been visited by the bfs algorithm
+    while (!curKeyNodes.empty())
+    {
+        long bfs_firstNode = *(curKeyNodes.begin());
+
+        std::vector<bool> bfs_visited(nodeNum_, false);
+        std::queue<long> q;
+
+        bfs_visited[bfs_firstNode];
+        q.push(bfs_firstNode);
+
+        curKeyNodes.erase(bfs_firstNode);   // has been visited, then delete
+        while (!q.empty())
+        {
+            long tmpNode = q.front();
+            q.pop();
+            for (long j = 0; j < nodeNum_; ++j)
+            {
+                if (matrix[tmpNode][j] != 0 && bfs_visited[j] == false)
+                {
+                    bfs_visited[j] = true;
+                    addKeyLink(tmpNode, j, 0);
+                    curKeyNodes.erase(j);   // has been visited, then delete
+                    q.push(j);
+                }
+            }
+        }
+    }
+
+
+#if 0
     // find all the key links in the graph
     // add them to the keyLinks_ data member
     for (long i = 0; i < nodeNum_; ++i)
@@ -645,6 +721,7 @@ void Graph::MCDSAlgorithm()
 
         }
     }
+#endif // 0
 
     return;
 }
