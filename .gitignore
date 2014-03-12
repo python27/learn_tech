@@ -1,4 +1,8 @@
 *.bmp
 *.out
+<<<<<<< HEAD
 *.pro.user
+=======
+*.jpg
+>>>>>>> 6df444f7e8093b918fc0153b1ea2b2db29a08f47
 Input/
