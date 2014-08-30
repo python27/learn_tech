@@ -9,7 +9,7 @@ Symbol = str
 
 class Env(dict):
     '''An environment: a dict of {'val':val} pairs, with an outer Env'''
-    def __init(self, parms=(), args=(), outer=None):
+    def __init__(self, parms=(), args=(), outer=None):
         self.update(zip(parms, args))
         self.outer = outer
     def find(self, var):
@@ -52,8 +52,8 @@ def eval(x, env=global_env):
         (_, var, exp) = x
         env[var] =  eval(exp, env)
     elif x[0] == 'lambda':  #(lambda (var*) exp)
-        (_, vars, exp) = x
-        return lambda *args:eval(exp, Env(vars, args, env))
+        (_, myvars, exp) = x
+        return lambda *args: eval(exp, Env(myvars, args, env))
     elif x[0] == 'begin':   #(begin exp*)
         for exp in x[1:]:
             var = eval(exp, env)
@@ -86,7 +86,7 @@ def read_from(tokens):
         tokens.pop(0) #pop off ')'
         return L
     elif token == ')':
-        raise SyntaxError("unexpected")
+        raise SyntaxError("unexpected)")
     else:
         return atom(token)
 
