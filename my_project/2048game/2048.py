@@ -5,9 +5,9 @@
 #   Read input from user
 #   upate matrix based on input
 #      input = left | right | up | down
-#      move all the nonempty grids to the top
-#          for each col: move col j to the top
-#                        combine all numbers
+#      for each col: move all the nonempty grids to the top
+#                    move col j to the top
+#                    combine all numbers
 #      generate a 2 or 4 in the empty grids
 #   if cannot update again, FAILED
 #   else if check 2048, WIN
@@ -58,6 +58,35 @@ def Make2048():
                 return True
     return False
 
+
+# Add the two adjacent same numbers of the list
+def CompressList(l):
+    # get the list not contain any zeros
+    nonZeroL = [x for x in l if x != 0]
+    newlist = []
+    i = 0
+    while i < len(nonZeroL):
+        if i+1 < len(nonZeroL) and nonZeroL[i] == nonZeroL[i+1]:
+            newlist.append(nonZeroL[i] + nonZeroL[i])
+            i = i + 2
+        else:
+            newlist.append(nonZeroL[i])
+            i = i + 1
+    
+    while len(newlist) < N:
+        newlist.append(0)
+
+    return newlist
+
+# generate a 2 or 4 in the empty grids of current Matrix
+def GenRandomNumberAtEmptyGrids():
+    emptyGrids = [i * N + j for i in range(N) for j in range(N) if Matrix[i][j] == 0]
+    random.shuffle(emptyGrids)
+    index = emptyGrids[0]
+    i = index / N
+    j = index % N
+    Matrix[i][j] = random.randint(1, 2) * 2
+
 # display matrix
 def PrintMatrix():
     for i in range(N):
@@ -67,6 +96,9 @@ def PrintMatrix():
 
 InitMatrix()
 while True:
+    ll = [2,4,2,2]
+    newll = CompressList(ll)
+    print newll
     PrintMatrix()
     ch = raw_input("please enter the a character:")
     if ch == "q" or ch == "Q":
@@ -79,7 +111,8 @@ while True:
         break;
     elif ch == "d" or ch == "D":
         break;
-    UpdateMatrix()
+    GenRandomNumberAtEmptyGrids()
+    #UpdateMatrix()
     if IsDeadMatrix() == True:
         print "FAILED"
         break
