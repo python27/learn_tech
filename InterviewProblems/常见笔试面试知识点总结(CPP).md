@@ -128,7 +128,46 @@ Test::GetCount(); // OK, 通过类名访问
 t.GetCount();  // OK, 通过对象访问
 ```
 
+## (三) C++中extern关键字
 
+C语言中extern关键字用于变量或者函数前，表示“**该变量或者函数在别处定义，要在此处引用**”
+
+### 3.1 extern 修饰变量
+
+最佳实践，将所有的全局变量放在一个头文件 `global.h`中并用extern关键字修饰，将变量的定义放在 `global.c`文件中，所有用到全局变量的文件只需要包含该头文件即可
+
+```
+/* global.h */
+extern int g_a;
+extern int g_b;
+```
+```
+/* global.c */
+#incude "global.h"
+int g_a = 10;
+int g_b = 20;
+```
+```
+/* A.cpp, B.cpp, C.cpp */
+#include "global.h"
+```
+### 3.2 extern 修饰函数
+
+作用于extern变量相似，仅仅表示函数在其他的源文件中定义
+
+### 3.3 extern "C" 链接指示
+
+在C++调用C函数时，需要在C++程序中用extern "C"声明要引用的函数，这告诉编译器，用C函数规范进行编译和链接，不要进行命名修饰。
+
+#### 注：有关命名修饰的解释
+由于C++语言支持函数重载，而C语言不支持，函数被C++编译后在符号库中的名字与C语言编译的不同，例如，
+```
+void foo(int x, int y)
+```
+
+该函数被C编译后在符号库中的名字为__foo，而C++编译器则会产生类似于__foo_int_int之类的名字（不同的编译器生成的名字略有不同，但是采用相同的机制，即将参数类型作为名字的一部分），这样生成的名字称为**mangled name**.
+
+__foo_int_int这样的名字包含了函数名、参数数量以及参数类型，C++靠这样的方式才区别重载函数。例如，在C++中，`void foo(int x, double y)`生成的符号名称为__foo_int_double
 
 ## C++中的虚函数机制
 
@@ -136,6 +175,6 @@ t.GetCount();  // OK, 通过对象访问
 
 ## C++对象的内存布局
 
-## C++中extern关键字
+
 
 ## C++中的static_cast和dynamic_cast区别
