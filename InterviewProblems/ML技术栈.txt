@@ -1,0 +1,28 @@
+书籍推荐：
+《推荐系统实践》
+《统计学习方法》
+Convex Optimization
+Pattern  Recognition and Machine Learning
+//机器学习公开课
+
+
+
+Deep Learning为核武器的人工智能
+三大巨头
+LeCun Bengio Hinton
+
+
+
+面试关注：
+[1]. 学术研究，发表过相关论文CVPR（理论学习和优化算法）
+[2]. 实践经验，竞赛KaggleCup，阿里，腾讯，facebook比赛，练兵
+
+相关技术：
+Hapdoop(MapReduce), Storm，Spark
+以Hadoop为入门
+
+推荐技术:
+
+
+Coursera平台上由斯坦福大学 提供的机器学习。证书颁发时间为2016年1月21日
+https://www.topcoder.com/members/python27/
